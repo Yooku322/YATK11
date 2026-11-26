@@ -1,132 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta name="site-version" content="1">
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Моя учебная база</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="Ответы к комплексному экзамену по цифровой схемотехнике и электротехнике">
+  <title>Комплексный экзамен — ответы</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <a class="logo" href="#">Моя учебная база</a>
-    <nav>
-      <a href="#materials">Материалы</a>
-      <a href="#add">Добавить</a>
-    </nav>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#">Экзамен<span>.</span></a>
+      <div class="header-actions">
+        <span id="connection" class="connection">Подключение…</span>
+        <button id="loginButton" class="button button-outline">Войти как редактор</button>
+        <button id="logoutButton" class="button button-outline hidden">Выйти</button>
+      </div>
+    </div>
   </header>
 
-  <main class="container">
-    <section class="intro">
-      <p class="eyebrow">Личная библиотека</p>
-      <h1>Учись, сохраняй, повторяй.</h1>
-      <p>Шпаргалки, практические работы, фотографии и код — в одном месте.</p>
-    </section>
+  <main class="layout">
+    <aside class="sidebar">
+      <h2>Разделы</h2>
+      <nav id="navigation"></nav>
+    </aside>
 
-    <section class="editor panel" id="add">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Редактор материалов</p>
-          <h2 id="formTitle">Добавить материал</h2>
-        </div>
+    <section class="content">
+      <div class="intro">
+        <p class="eyebrow">Подготовка к экзамену</p>
+        <h1>Вопросы и ответы</h1>
+        <p>Краткий справочник по цифровой схемотехнике, электротехнике и электронике.</p>
       </div>
 
-      <form id="materialForm">
-        <input type="hidden" id="materialId">
-
-        <div class="form-grid">
-          <label>
-            Название
-            <input id="title" type="text" placeholder="Например: Основы HTML" required>
-          </label>
-
-          <label>
-            Тип материала
-            <select id="type">
-              <option value="cheatsheet">Шпаргалка</option>
-              <option value="practice">Практическая работа</option>
-            </select>
-          </label>
-
-          <label>
-            Предмет или тема
-            <input id="subject" type="text" placeholder="Например: Веб-разработка">
-          </label>
-
-          <label>
-            Фотографии
-            <input id="photos" type="file" accept="image/*" multiple>
-          </label>
-        </div>
-
-        <label>
-          Описание и заметки
-          <textarea id="description" rows="4" placeholder="Добавь объяснение, шаги работы или заметки..."></textarea>
-        </label>
-
-        <label>
-          Код (если нужен)
-          <textarea id="code" class="code-input" rows="8" placeholder="Вставь сюда код..."></textarea>
-        </label>
-
-        <div id="photoPreview" class="photo-preview"></div>
-
-        <div class="form-actions">
-          <button class="button primary" type="submit" id="submitButton">Добавить материал</button>
-          <button class="button secondary hidden" type="button" id="cancelEdit">Отменить редактирование</button>
-        </div>
-
-        <p class="help-text">
-          Материалы и фотографии хранятся локально в этом браузере.
-        </p>
-      </form>
-    </section>
-
-    <section id="materials" class="materials-section">
-      <div class="section-heading materials-heading">
-        <div>
-          <p class="eyebrow">Твоя библиотека</p>
-          <h2>Материалы</h2>
-        </div>
-
-        <div class="filters">
-          <input id="search" type="search" placeholder="Поиск по материалам">
-          <select id="filterType" aria-label="Фильтр по типу">
-            <option value="all">Все материалы</option>
-            <option value="cheatsheet">Шпаргалки</option>
-            <option value="practice">Практические работы</option>
-          </select>
-        </div>
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Найти вопрос…" aria-label="Поиск">
+        <button id="addButton" class="button button-primary hidden">＋ Добавить ответ</button>
       </div>
 
-      <div id="materialsList" class="materials-list"></div>
-      <p id="emptyMessage" class="empty-message">Пока материалов нет. Добавь первый выше.</p>
+      <div id="editorNotice" class="notice hidden">
+        Вы вошли как редактор. Можно добавлять, изменять и удалять ответы.
+      </div>
+      <div id="statusMessage" class="status-message"></div>
+      <div id="topics"></div>
     </section>
   </main>
 
-  <footer class="footer">Твоя учебная база</footer>
+  <dialog id="answerDialog">
+    <form id="answerForm" method="dialog" class="editor-form">
+      <h2 id="dialogTitle">Добавить ответ</h2>
+      <label>
+        Раздел
+        <select id="categoryInput" required>
+          <option>Цифровая схемотехника</option>
+          <option>Электротехника и электроника</option>
+        </select>
+      </label>
+      <label>
+        Вопрос
+        <input id="questionInput" required maxlength="250">
+      </label>
+      <label>
+        Ответ
+        <textarea id="answerInput" required rows="9"></textarea>
+      </label>
+      <label>
+        Ссылка на иллюстрацию (необязательно)
+        <input id="imageInput" type="url" placeholder="https://…">
+      </label>
+      <div class="form-actions">
+        <button type="button" id="cancelButton" class="button button-outline">Отмена</button>
+        <button type="submit" class="button button-primary">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
 
-  <script src="script.js"></script>
-  <script>
-  const currentVersion = document.lastModified;
+  <dialog id="loginDialog">
+    <form id="loginForm" method="dialog" class="editor-form">
+      <h2>Вход редактора</h2>
+      <label>Email<input id="emailInput" type="email" autocomplete="username" required></label>
+      <label>Пароль<input id="passwordInput" type="password" autocomplete="current-password" required></label>
+      <p id="loginError" class="error"></p>
+      <div class="form-actions">
+        <button type="button" id="cancelLoginButton" class="button button-outline">Отмена</button>
+        <button type="submit" class="button button-primary">Войти</button>
+      </div>
+    </form>
+  </dialog>
 
-  setInterval(async () => {
-    try {
-      const response = await fetch(
-        window.location.href + "?check=" + Date.now(),
-        { cache: "no-store" }
-      );
+  <footer>Ответы предназначены для подготовки: сверяйте формулы и обозначения с учебными материалами.</footer>
 
-      const html = await response.text();
-      const newVersion = html.match(/<meta name="site-version" content="([^"]+)"/);
-
-      if (newVersion && newVersion[1] !== currentVersion) {
-        location.reload();
-      }
-    } catch (error) {
-      console.error("Не удалось проверить обновление сайта:", error);
-    }
-  }, 30000);
-</script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
