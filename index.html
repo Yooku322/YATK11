@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <meta name="site-version" content="1">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Моя учебная база</title>
@@ -106,5 +107,26 @@
   <footer class="footer">Твоя учебная база</footer>
 
   <script src="script.js"></script>
+  <script>
+  const currentVersion = document.lastModified;
+
+  setInterval(async () => {
+    try {
+      const response = await fetch(
+        window.location.href + "?check=" + Date.now(),
+        { cache: "no-store" }
+      );
+
+      const html = await response.text();
+      const newVersion = html.match(/<meta name="site-version" content="([^"]+)"/);
+
+      if (newVersion && newVersion[1] !== currentVersion) {
+        location.reload();
+      }
+    } catch (error) {
+      console.error("Не удалось проверить обновление сайта:", error);
+    }
+  }, 30000);
+</script>
 </body>
 </html>
