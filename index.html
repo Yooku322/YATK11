@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Моя учебная база</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="#">Моя учебная база</a>
+    <nav>
+      <a href="#materials">Материалы</a>
+      <a href="#add">Добавить</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <p class="eyebrow">Личная библиотека</p>
+      <h1>Учись, сохраняй, повторяй.</h1>
+      <p>Шпаргалки, практические работы, фотографии и код — в одном месте.</p>
+    </section>
+
+    <section class="editor panel" id="add">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Редактор материалов</p>
+          <h2 id="formTitle">Добавить материал</h2>
+        </div>
+      </div>
+
+      <form id="materialForm">
+        <input type="hidden" id="materialId">
+
+        <div class="form-grid">
+          <label>
+            Название
+            <input id="title" type="text" placeholder="Например: Основы HTML" required>
+          </label>
+
+          <label>
+            Тип материала
+            <select id="type">
+              <option value="cheatsheet">Шпаргалка</option>
+              <option value="practice">Практическая работа</option>
+            </select>
+          </label>
+
+          <label>
+            Предмет или тема
+            <input id="subject" type="text" placeholder="Например: Веб-разработка">
+          </label>
+
+          <label>
+            Фотографии
+            <input id="photos" type="file" accept="image/*" multiple>
+          </label>
+        </div>
+
+        <label>
+          Описание и заметки
+          <textarea id="description" rows="4" placeholder="Добавь объяснение, шаги работы или заметки..."></textarea>
+        </label>
+
+        <label>
+          Код (если нужен)
+          <textarea id="code" class="code-input" rows="8" placeholder="Вставь сюда код..."></textarea>
+        </label>
+
+        <div id="photoPreview" class="photo-preview"></div>
+
+        <div class="form-actions">
+          <button class="button primary" type="submit" id="submitButton">Добавить материал</button>
+          <button class="button secondary hidden" type="button" id="cancelEdit">Отменить редактирование</button>
+        </div>
+
+        <p class="help-text">
+          Материалы и фотографии хранятся локально в этом браузере.
+        </p>
+      </form>
+    </section>
+
+    <section id="materials" class="materials-section">
+      <div class="section-heading materials-heading">
+        <div>
+          <p class="eyebrow">Твоя библиотека</p>
+          <h2>Материалы</h2>
+        </div>
+
+        <div class="filters">
+          <input id="search" type="search" placeholder="Поиск по материалам">
+          <select id="filterType" aria-label="Фильтр по типу">
+            <option value="all">Все материалы</option>
+            <option value="cheatsheet">Шпаргалки</option>
+            <option value="practice">Практические работы</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="materialsList" class="materials-list"></div>
+      <p id="emptyMessage" class="empty-message">Пока материалов нет. Добавь первый выше.</p>
+    </section>
+  </main>
+
+  <footer class="footer">Твоя учебная база</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
